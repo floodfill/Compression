@@ -1,10 +1,15 @@
-/** this is to check whether the input data is in the right format
+/**
+test whether a file is the right format for the compressor
 
-Neil Liang
+compile:
+g++ checkIncrease.cpp -o checkIncrease
+
+usage:
+./checkIncrease [file to be checked]
+
+neilliang
 
 **/
-
-
 #include<iostream>
 #include<stdio.h>
 #include<stdlib.h>
@@ -12,8 +17,12 @@ using namespace std;
 #define BITS_L 32
 typedef unsigned long BYTES;
 
-int main(){
-	FILE *f = fopen("INVERTED_INDEX_FILE.DAT","r");
+int main(int argc,char *argv[]){
+	if(argc !=2){
+		cout<<"usage: ./checkIncrease [file to be checked]"<<endl;
+	}
+
+	FILE *f = fopen(argv[1],"r");
 	size_t size = sizeof(BYTES);
 	BYTES *buf = new BYTES[1];
 	BYTES temp = 0ul;
@@ -30,8 +39,7 @@ int main(){
 			}
 		}
 	}
-	fclose(f);
 	delete []buf;
-	return 0;
+	fclose(f);
 	
 }
