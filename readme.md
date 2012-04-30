@@ -7,6 +7,7 @@ files overview:
 
 2> checkIncrease.cpp  // check whether the data to be compressed is valid
 
+
 3> Pro2_Inverted_Indexing.tar.bz2 // Inverted list analyzer and merger
 
 4> DataGenerator.java // Simple Inverted List data generator
