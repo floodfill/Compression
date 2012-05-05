@@ -7,13 +7,13 @@ import java.util.Random;
 
 public class DataGenerator {
 
-	public static int numberOfLists = 100;
+	public static int numberOfLists = 3;
 
-	public static int maxNumberOfPostingsInList = 10000;
+	public static int maxNumberOfPostingsInList = 5;
 
-	public static int minDGap = 100, maxDGap = 200;
+	public static int minDGap = 1, maxDGap = 10;
 
-	public static String outputFile = null;
+	public static String outputFile = "d:/d.dat";
 
 	public static void showMsg() {
 		System.out.println("Data Generator v1.0 by Kan Xiao");
@@ -45,22 +45,27 @@ public class DataGenerator {
 			Random rand = new Random();
 			BufferedOutputStream fout = new BufferedOutputStream(fos);
 			for (int i = 0; i < numberOfLists; i++) {
-				int nOPIL = rand.nextInt(maxNumberOfPostingsInList);
+				int nOPIL = rand.nextInt(maxNumberOfPostingsInList) + 1;
 				int buf[] = int2bytes(nOPIL);
 				for (int k = 0; k < 4; k++)
 					fout.write(buf[k]);
 				int now = 1;
+				//System.out.println(nOPIL);
 				for (int j = 1; j <= nOPIL; j++) {
 					countOfNumbers++;
 					buf = int2bytes(now);
-					now += rand.nextInt(maxDGap - minDGap) + maxDGap;
+					//System.out.format("%d ", now);
+					now += rand.nextInt(maxDGap - minDGap) + minDGap;
 					for (int k = 0; k < 4; k++)
 						fout.write(buf[k]);
 				}
+				//System.out.println();
 			}
 			System.out.format("Number of Integers produced: %d\n", countOfNumbers);
-			fos.close();
+			fout.flush();
 			fout.close();
+			fos.close();
+
 		} catch (Exception e) {
 			showMsg();
 			e.printStackTrace();

@@ -93,7 +93,9 @@ public class DiaosiEncoder {
 
 		// write out selectors
 
-		S16 s = new S16();
+		S16Enc s = new S16Enc();
+		for (int i = 0; i < sel.size(); i++)
+			System.out.format("%d ", sel.get(i));
 		byte selEncoded[] = s.encode(sel);
 		fos = new FileOutputStream(args[1] + ".inf");
 		fout = new BufferedOutputStream(fos);
@@ -126,7 +128,7 @@ public class DiaosiEncoder {
 
 }
 
-class S16 {
+class S16Enc {
 
 	public static byte[] intToByteArray(final int x) {
 		final byte[] bytes = new byte[4];
