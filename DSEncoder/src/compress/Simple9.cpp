@@ -12,7 +12,7 @@
  *-----------------------------------------------------------------------------
  */
 
-#include "compress/Simple9.hpp"
+#include "Simple9.hpp"
 
 #define SIMPLE9_LOGDESC         4
 #define SIMPLE9_LEN             (1 << SIMPLE9_LOGDESC)

@@ -12,7 +12,7 @@
  *-----------------------------------------------------------------------------
  */
 
-#include "compress/VariableByte.hpp"
+#include "VariableByte.hpp"
 
 #define VARIABLEBYTE_DESC       0x80
 #define VARIABLEBYTE_DATA       (VARIABLEBYTE_DESC - 1)

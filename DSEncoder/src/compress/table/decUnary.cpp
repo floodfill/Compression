@@ -12,7 +12,7 @@
  *-----------------------------------------------------------------------------
  */
 
-#include "compress/decUnary.hpp"
+#include "../decUnary.hpp"
 
 unsigned short int opc::decUnary[1 << 16] = {
         16, 15, 14, 14, 13, 13, 13, 13, 12, 12, 12, 

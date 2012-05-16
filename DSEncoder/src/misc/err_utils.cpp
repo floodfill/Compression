@@ -12,7 +12,7 @@
  *-----------------------------------------------------------------------------
  */
 
-#include "misc/err_utils.hpp"
+#include "err_utils.hpp"
 
 using namespace std;
 

@@ -10,7 +10,7 @@
 
 
 #include <iostream>
-#include <compress/Simple16.hpp>
+#include "compress/Simple16.hpp"
 #include <cstring>
 
 

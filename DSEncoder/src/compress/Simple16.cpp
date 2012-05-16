@@ -12,7 +12,7 @@
  *-----------------------------------------------------------------------------
  */
 
-#include "compress/Simple16.hpp"
+#include "Simple16.hpp"
 
 #define SIMPLE16_LOGDESC        4
 #define SIMPLE16_LEN            (1 << SIMPLE16_LOGDESC)

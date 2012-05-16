@@ -12,7 +12,7 @@
  *-----------------------------------------------------------------------------
  */
 
-#include "io/BitsWriter.hpp"
+#include "BitsWriter.hpp"
 
 using namespace opc;
 

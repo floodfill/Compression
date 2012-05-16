@@ -1,14 +1,15 @@
 src/compress/Simple16.d src/compress/Simple16.o: \
- ../src/compress/Simple16.cpp \
- /home/kxiao/Downloads/maropu-integer_encoding_library-73583ce/include/compress/Simple16.hpp \
- /home/kxiao/Downloads/maropu-integer_encoding_library-73583ce/include/xxx_common.hpp \
- /home/kxiao/Downloads/maropu-integer_encoding_library-73583ce/include/misc/err_utils.hpp \
- /home/kxiao/Downloads/maropu-integer_encoding_library-73583ce/include/io/BitsWriter.hpp
+ ../src/compress/Simple16.cpp ../src/compress/Simple16.hpp \
+ ../src/compress/../xxx_common.hpp ../src/compress/../misc/err_utils.hpp \
+ ../src/compress/../io/BitsWriter.hpp \
+ ../src/compress/../io/../xxx_common.hpp
 
-/home/kxiao/Downloads/maropu-integer_encoding_library-73583ce/include/compress/Simple16.hpp:
+../src/compress/Simple16.hpp:
 
-/home/kxiao/Downloads/maropu-integer_encoding_library-73583ce/include/xxx_common.hpp:
+../src/compress/../xxx_common.hpp:
 
-/home/kxiao/Downloads/maropu-integer_encoding_library-73583ce/include/misc/err_utils.hpp:
+../src/compress/../misc/err_utils.hpp:
 
-/home/kxiao/Downloads/maropu-integer_encoding_library-73583ce/include/io/BitsWriter.hpp:
+../src/compress/../io/BitsWriter.hpp:
+
+../src/compress/../io/../xxx_common.hpp:

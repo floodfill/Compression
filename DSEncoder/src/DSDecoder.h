@@ -12,7 +12,7 @@
 #include <fstream>
 #include <cstring>
 #include <vector>
-#include <compress/Simple16.hpp>
+#include "compress/Simple16.hpp"
 #include <exception>
 #include <ctime>
 

@@ -12,7 +12,7 @@
  *-----------------------------------------------------------------------------
  */
 
-#include "io/BitsReader.hpp"
+#include "BitsReader.hpp"
 
 #define BITSRD_M64      0x000000000000ffff
 #define BITSRD_M32      0x0000ffff

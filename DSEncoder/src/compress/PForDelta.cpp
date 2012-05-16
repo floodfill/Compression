@@ -12,7 +12,7 @@
  *-----------------------------------------------------------------------------
  */
 
-#include "compress/PForDelta.hpp"
+#include "PForDelta.hpp"
 
 #define PFORDELTA_RATIO         0.1
 
