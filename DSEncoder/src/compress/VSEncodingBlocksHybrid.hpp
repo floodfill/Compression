@@ -15,11 +15,11 @@
 #ifndef __VSENCODINGBLOCKSHYBRID_HPP__
 #define __VSENCODINGBLOCKSHYBRID_HPP__
 
-#include "xxx_common.hpp"
+#include "../xxx_common.hpp"
 
-#include "compress/VSEncoding.hpp"
-#include "compress/VSEncodingBlocks.hpp"
-#include "compress/VSEncodingRest.hpp"
+#include "VSEncoding.hpp"
+#include "VSEncodingBlocks.hpp"
+#include "VSEncodingRest.hpp"
 
 #define VSEHYBRID_THRES         4096
 

@@ -16,11 +16,11 @@
 #ifndef __VSENCODINGNAIVE_HPP__
 #define __VSENCODINGNAIVE_HPP__
 
-#include "xxx_common.hpp"
+#include "../xxx_common.hpp"
 
-#include "compress/VSEncoding.hpp"
-#include "io/BitsReader.hpp"
-#include "io/BitsWriter.hpp"
+#include "../compress/VSEncoding.hpp"
+#include "../io/BitsReader.hpp"
+#include "../io/BitsWriter.hpp"
 
 namespace opc {
 

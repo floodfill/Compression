@@ -15,7 +15,7 @@
 #ifndef __VSENCODING_HPP__
 #define __VSENCODING_HPP__
 
-#include "xxx_common.hpp"
+#include "../xxx_common.hpp"
 
 /*
  * If a list is larger that this parameter, then

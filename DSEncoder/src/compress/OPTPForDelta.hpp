@@ -19,11 +19,11 @@
 #ifndef __OPTPFORDELTAV1_HPP__
 #define __OPTPFORDELTAV1_HPP__
 
-#include "xxx_common.hpp"
+#include "../xxx_common.hpp"
 
-#include "compress/Simple16.hpp"
-#include "compress/PForDelta.hpp"
-#include "io/BitsWriter.hpp"
+#include "Simple16.hpp"
+#include "PForDelta.hpp"
+#include "../io/BitsWriter.hpp"
 
 namespace opc {
 

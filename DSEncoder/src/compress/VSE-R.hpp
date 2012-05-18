@@ -15,13 +15,13 @@
 #ifndef __VSE_R_HPP__
 #define __VSE_R_HPP__
 
-#include "xxx_common.hpp"
+#include "../xxx_common.hpp"
 
-#include "compress/Delta.hpp"
-#include "compress/VSEncoding.hpp"
-#include "compress/VSEncodingNaive.hpp"
-#include "io/BitsReader.hpp"
-#include "io/BitsWriter.hpp"
+#include "../compress/Delta.hpp"
+#include "../compress/VSEncoding.hpp"
+#include "../compress/VSEncodingNaive.hpp"
+#include "../io/BitsReader.hpp"
+#include "../io/BitsWriter.hpp"
 
 namespace opc {
 

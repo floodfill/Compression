@@ -25,7 +25,7 @@ C_UPPER_DEPS :=
 SUBDIRS := \
 src/misc \
 src/io \
+src \
 src/compress/table \
 src/compress \
-src \
 

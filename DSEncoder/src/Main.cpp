@@ -12,7 +12,7 @@
 using namespace std;
 
 int main() {
-	string base = "/home/kxiao/Desktop/integer_encoding_library/big";
+	string base = "/home/kxiao/Desktop/integer_encoding_library/bigbig";
 //	const char * en[] = { "", (base + ".dat").c_str(),
 //			(base + "Compressed").c_str() };
 //
@@ -21,5 +21,4 @@ int main() {
 			+ "Uncompressed.dat").c_str() };
 	deMain(3, de);
 	return 0;
-
 }

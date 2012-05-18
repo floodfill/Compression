@@ -78,6 +78,7 @@ VariableByte::encodeArray(uint32_t *in, uint32_t len,
 
                 default:
                         eoutput("Exception: nwords's out of range");
+                        break;
 
                 }
         }

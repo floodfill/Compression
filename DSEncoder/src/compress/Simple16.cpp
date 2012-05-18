@@ -372,7 +372,7 @@ void Simple16::encodeArray(uint32_t *in, uint32_t len, uint32_t *out,
 }
 
 void Simple16::decodeArray(uint32_t *in, uint32_t len, uint32_t *out,
-		uint32_t &nvalue) {
+		uint32_t nvalue) {
 	uint32_t *end = in + len;
 
 	uint32_t *last = out;
@@ -385,6 +385,24 @@ void Simple16::decodeArray(uint32_t *in, uint32_t len, uint32_t *out,
 		last = out;
 	}
 	nvalue = cnt;
+}
+
+/**
+ * This function is ported by Kan Xiao which fixed the length issues of the original decodeArray
+ *
+ */
+void Simple16::decodeArrayFixed(uint32_t *in, uint32_t len, uint32_t *out, uint32_t &nvalue){
+	uint32_t *end = in + len;
+		uint32_t *last = out;
+		uint32_t cnt = 0;
+
+		while (end > in) {
+			(__simple16_unpack[*in >> (32 - SIMPLE16_LOGDESC)])(&out, &in);
+	//		printf("Dif: %ld\n", (out - last));
+			cnt += out - last;
+			last = out;
+		}
+		nvalue = cnt;
 }
 
 /* --- Intra functions below --- */

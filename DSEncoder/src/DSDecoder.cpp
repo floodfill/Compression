@@ -7,8 +7,9 @@
 //============================================================================
 
 /**
- * Time: May 14, 0256am
- * Bug #1: Simple16.cpp 的decoderArray存在问题，不能全部被解压selectors，导致segment error(vector 越界 ）
+ * Bug #1@May14_0256: Simple16.cpp 的decoderArray存在问题，不能全部被解压selectors，导致segment error(vector 越界 ）
+ *
+ * Patch #1@May14_2339: Bug #1 already fixed
  *
  */
 
@@ -17,7 +18,7 @@
 using namespace std;
 using namespace opc;
 
-const uint32_t BUFSIZE = 10000000;
+const uint32_t BUFSIZE = 50000000;
 const uint32_t MAXNUM = 30 * BUFSIZE;
 FILE *selIn, *datIn, *fout;
 //char *bs, *bd;
@@ -26,8 +27,8 @@ string outfile;
 
 uint32_t *buf;
 uint32_t cntOfBuf = 0, sizeOfFilled = 0;
-vector<uint32_t> sels;
-uint32_t numbers[MAXNUM];
+vector<uint32_t> *sels;
+uint32_t *numbers;
 uint32_t offset = 0;
 uint32_t remain = 0;
 uint32_t rBits = 0;
@@ -61,7 +62,7 @@ void checkIllegalPara(int argc, const char *argv[]) {
 	onStart = clock();
 }
 
-int _numOfBits(uint32_t num) {
+inline int _numOfBits(uint32_t num) {
 	int count = 0;
 	while (num > 0) {
 		num >>= 1;
@@ -70,7 +71,7 @@ int _numOfBits(uint32_t num) {
 	return count;
 }
 
-uint32_t getNextInt(uint32_t numOBits) {
+inline uint32_t getNextInt(uint32_t numOBits) {
 	uint32_t ret = 0;
 	//uint32_t rBits = _numOfBits(remain);
 	if (numOBits <= rBits) {
@@ -101,7 +102,7 @@ uint32_t getNextInt(uint32_t numOBits) {
 	return ret;
 }
 
-void _write2disk(uint32_t num) {
+inline void _write2disk(uint32_t num) {
 	if (offset < MAXNUM) {
 		numbers[offset++] = num;
 	} else {
@@ -119,11 +120,11 @@ void decompress() {
 	while (!feof(selIn)) {
 		uint32_t count = fread(buf, 4, BUFSIZE, selIn);
 		uint32_t inc = 0;
-		s.decodeArray(buf, count, numbers, inc);
+		s.decodeArrayFixed(buf, count, numbers, inc);
 		for (uint32_t i = 0; i < inc; i++) {
 			//uint32_t tt = numbers[i];
 			if (numbers[i] != 0) {
-				sels.push_back(numbers[i]);
+				sels->push_back(numbers[i]);
 			} else
 				break;
 		}
@@ -138,12 +139,12 @@ void decompress() {
 	memset(numbers, 0, MAXNUM);
 
 	uint64_t p = 0;
-	while (p < sels.size()) {
-		uint32_t N = sels.at(p);
+	while (p < sels->size()) {
+		uint32_t N = sels->at(p);
 		_write2disk(N);
 		long last = -1;
 		for (uint32_t i = 1; i <= N; i++) {
-			uint32_t sel = sels.at(p + i);
+			uint32_t sel = sels->at(p + i);
 			uint32_t now = getNextInt(sel);
 			if (last == -1) {
 				_write2disk(now);
@@ -170,7 +171,8 @@ void init() {
 		exit(-1);
 	}
 	buf = new uint32_t[BUFSIZE];
-	//numbers = new uint32_t[MAXNUM];
+	numbers = new uint32_t[MAXNUM];
+	sels = new vector<uint32_t>();
 //
 //	bs = new char[BUFSIZE];
 //	bd = new char[BUFSIZE];
@@ -183,10 +185,10 @@ void dispose() {
 	fclose(datIn);
 	fclose(fout);
 	delete[] buf;
-	//delete[] numbers;
+	delete[] numbers;
 ////	delete[] bs;
 ////	delete[] bd;
-//	delete sels;
+	delete sels;
 }
 
 void msg() {

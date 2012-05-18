@@ -15,10 +15,10 @@
 #ifndef __DELTA_HPP__
 #define __DELTA_HPP__
 
-#include "xxx_common.hpp"
+#include "../xxx_common.hpp"
 
-#include "io/BitsWriter.hpp"
-#include "io/BitsReader.hpp"
+#include "../io/BitsWriter.hpp"
+#include "../io/BitsReader.hpp"
 
 namespace opc {
 

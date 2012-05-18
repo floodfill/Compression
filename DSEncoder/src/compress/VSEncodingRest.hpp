@@ -15,10 +15,10 @@
 #ifndef __VSENCODING_REST_HPP__
 #define __VSENCODING_REST_HPP__
 
-#include "xxx_common.hpp"
+#include "../xxx_common.hpp"
 
-#include "compress/VSEncoding.hpp"
-#include "io/BitsWriter.hpp"
+#include "../compress/VSEncoding.hpp"
+#include "../io/BitsWriter.hpp"
 
 namespace opc {
 
