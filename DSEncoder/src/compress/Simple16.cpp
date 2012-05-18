@@ -149,7 +149,7 @@ static inline void __simple16_unpack28_1(uint32_t **out, uint32_t **in)
 /* A interface of unpacking functions above */
 typedef void (*__simple16_unpacker)(uint32_t **out, uint32_t **in);
 
-static __simple16_unpacker          __simple16_unpack [SIMPLE16_LEN] = {
+static __simple16_unpacker              __simple16_unpack [SIMPLE16_LEN] = {
 		__simple16_unpack1_28, __simple16_unpack2_7_1_14,
 		__simple16_unpack1_7_2_7_1_7, __simple16_unpack1_14_2_7,
 		__simple16_unpack2_14, __simple16_unpack4_1_3_8,
@@ -372,12 +372,19 @@ void Simple16::encodeArray(uint32_t *in, uint32_t len, uint32_t *out,
 }
 
 void Simple16::decodeArray(uint32_t *in, uint32_t len, uint32_t *out,
-		uint32_t nvalue) {
+		uint32_t &nvalue) {
 	uint32_t *end = in + len;
 
-	while (end >= in) {
+	uint32_t *last = out;
+	uint32_t cnt = 0;
+
+	while (end > in) {
 		(__simple16_unpack[*in >> (32 - SIMPLE16_LOGDESC)])(&out, &in);
+//		printf("Dif: %ld\n", (out - last));
+		cnt += out - last;
+		last = out;
 	}
+	nvalue = cnt;
 }
 
 /* --- Intra functions below --- */

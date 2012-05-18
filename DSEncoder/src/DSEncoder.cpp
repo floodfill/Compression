@@ -16,7 +16,7 @@
 using namespace std;
 using namespace opc;
 
-const uint32_t MAXSIZE = 1024;
+const uint32_t MAXSIZE = 1024 * 1024 * 10; //Write buffer: 10M
 FILE *finp, *foutp, *infout;
 uint32_t* wBuf, cnt = 0, rem = 0;
 uint32_t *buff, *sell;

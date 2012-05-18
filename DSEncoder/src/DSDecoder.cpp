@@ -17,7 +17,7 @@
 using namespace std;
 using namespace opc;
 
-const uint32_t BUFSIZE = 100;
+const uint32_t BUFSIZE = 10000000;
 const uint32_t MAXNUM = 30 * BUFSIZE;
 FILE *selIn, *datIn, *fout;
 //char *bs, *bd;
@@ -31,7 +31,8 @@ uint32_t numbers[MAXNUM];
 uint32_t offset = 0;
 uint32_t remain = 0;
 uint32_t rBits = 0;
-time_t onStart, onEnd;
+unsigned onStart;
+unsigned onEnd;
 
 int deMain(int argc, const char *argv[]) {
 	checkIllegalPara(argc, argv);
@@ -43,21 +44,21 @@ int deMain(int argc, const char *argv[]) {
 }
 
 void showTime(void) {
-	time(&onEnd);
-	double dif = difftime(onEnd, onStart);
-	printf("Diaosi Coding Decoder ends in %0.2f seconds\n", dif);
+	onEnd = clock();
+	double CLOCKS_PER_MILLISEC = CLOCKS_PER_SEC / 1000.0;
+	printf("Diaosi Decoder ends in %0.2f seconds\n",
+			(onEnd - onStart) / (CLOCKS_PER_MILLISEC * 1000.0));
 
 }
 
 void checkIllegalPara(int argc, const char *argv[]) {
-	cout << sels.max_size() << endl;
 	if (argc < 3) {
 		msg();
 		exit(0);
 	}
 	prefix = argv[1];
 	outfile = argv[2];
-	time(&onStart);
+	onStart = clock();
 }
 
 int _numOfBits(uint32_t num) {
@@ -116,10 +117,10 @@ void decompress() {
 	//decompress all selectors first;
 	Simple16 s;
 	while (!feof(selIn)) {
-		memset(numbers, 0, MAXNUM);
 		uint32_t count = fread(buf, 4, BUFSIZE, selIn);
-		s.decodeArray(buf, count, numbers, count);
-		for (uint32_t i = 0; i < BUFSIZE; i++) {
+		uint32_t inc = 0;
+		s.decodeArray(buf, count, numbers, inc);
+		for (uint32_t i = 0; i < inc; i++) {
 			//uint32_t tt = numbers[i];
 			if (numbers[i] != 0) {
 				sels.push_back(numbers[i]);
@@ -127,11 +128,11 @@ void decompress() {
 				break;
 		}
 	}
-	for (int i = 0; i < BUFSIZE; i++)
-		if (numbers[i] != 0)
-			printf("%d\n", numbers[i]);
-		else
-			break;
+//	for (int i = 0; i < BUFSIZE; i++)
+//		if (numbers[i] != 0)
+//			printf("%d\n", numbers[i]);
+//		else
+//			break;
 	memset(buf, 0, BUFSIZE);
 	sizeOfFilled = fread(buf, 4, BUFSIZE, datIn);
 	memset(numbers, 0, MAXNUM);
