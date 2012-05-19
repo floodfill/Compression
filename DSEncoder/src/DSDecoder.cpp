@@ -125,8 +125,7 @@ void decompress() {
 			//uint32_t tt = numbers[i];
 			if (numbers[i] != 0) {
 				sels->push_back(numbers[i]);
-			} else
-				break;
+			}
 		}
 	}
 //	for (int i = 0; i < BUFSIZE; i++)
