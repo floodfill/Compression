@@ -7,7 +7,10 @@
 //============================================================================
 
 /**
- * Bug #1@May14_0256: Simple16.cpp 的decoderArray存在问题，不能全部被解压selectors，导致segment error(vector 越界 ）
+ *
+ * Bug #1@May14_0256: The decodeArray has a bug that some selectors
+ * couldn't be extracted therefore segment error raised(visiting somewhere
+ * beyond the array bound.
  *
  * Patch #1@May14_2339: Bug #1 already fixed
  *
@@ -18,22 +21,28 @@
 using namespace std;
 using namespace opc;
 
-const uint32_t BUFSIZE = 50000000;
+const uint32_t BUFSIZE = 1024 * 1024 * 64; //Buffer size is 64M;
 const uint32_t MAXNUM = 30 * BUFSIZE;
 FILE *selIn, *datIn, *fout;
 //char *bs, *bd;
 string prefix;
 string outfile;
 
-uint32_t *buf;
+uint32_t *rBuf;
 uint32_t cntOfBuf = 0, sizeOfFilled = 0;
-vector<uint32_t> *sels;
 uint32_t *numbers;
+
+uint32_t *sBuf;
+
+uint32_t *wBuf;
 uint32_t offset = 0;
 uint32_t remain = 0;
 uint32_t rBits = 0;
+
 unsigned onStart;
 unsigned onEnd;
+
+Simple16 s;
 
 int deMain(int argc, const char *argv[]) {
 	checkIllegalPara(argc, argv);
@@ -82,15 +91,15 @@ inline uint32_t getNextInt(uint32_t numOBits) {
 		ret = remain;
 		uint32_t next;
 		if (cntOfBuf < sizeOfFilled) {
-			next = buf[cntOfBuf++];
+			next = rBuf[cntOfBuf++];
 		} else {
-			sizeOfFilled = fread(buf, 4, BUFSIZE, datIn);
+			sizeOfFilled = fread(rBuf, 4, BUFSIZE, datIn);
 			cntOfBuf = 0;
 			if (sizeOfFilled <= 0) {
 				printf("Input data error!");
 				exit(-1);
 			}
-			next = buf[cntOfBuf++];
+			next = rBuf[cntOfBuf++];
 		}
 		int nBits = numOBits - rBits;
 		uint32_t temp = next % (1 << nBits);
@@ -103,61 +112,84 @@ inline uint32_t getNextInt(uint32_t numOBits) {
 }
 
 inline void _write2disk(uint32_t num) {
-	if (offset < MAXNUM) {
-		numbers[offset++] = num;
+	if (offset < BUFSIZE) {
+		wBuf[offset++] = num;
 	} else {
-		uint32_t temp = fwrite(numbers, 4, offset, fout);
+		uint32_t temp = fwrite(wBuf, 4, offset, fout);
 		if (temp != offset)
 			throw exception();
 		offset = 0;
-		numbers[offset++] = num;
+		wBuf[offset++] = num;
 	}
+}
+
+inline void refill(uint32_t &count, uint32_t &inc) {
+	count = fread(sBuf, 4, BUFSIZE, selIn);
+	s.decodeArrayFixed(sBuf, count, numbers, inc);
+//	for (int i = 0; i < inc; i++)
+//		if (numbers[i] != 0) {
+//			printf("%d ", numbers[i]);
+//		}
 }
 
 void decompress() {
 	//decompress all selectors first;
-	Simple16 s;
-	while (!feof(selIn)) {
-		uint32_t count = fread(buf, 4, BUFSIZE, selIn);
-		uint32_t inc = 0;
-		s.decodeArrayFixed(buf, count, numbers, inc);
-		for (uint32_t i = 0; i < inc; i++) {
-			//uint32_t tt = numbers[i];
-			if (numbers[i] != 0) {
-				sels->push_back(numbers[i]);
-			}
-		}
-	}
-//	for (int i = 0; i < BUFSIZE; i++)
-//		if (numbers[i] != 0)
-//			printf("%d\n", numbers[i]);
-//		else
-//			break;
-	memset(buf, 0, BUFSIZE);
-	sizeOfFilled = fread(buf, 4, BUFSIZE, datIn);
+	memset(rBuf, 0, BUFSIZE);
+	memset(wBuf, 0, BUFSIZE);
+	memset(sBuf, 0, BUFSIZE);
 	memset(numbers, 0, MAXNUM);
 
+	sizeOfFilled = fread(rBuf, 4, BUFSIZE, datIn);
+
+	uint32_t count = 0;
+	uint32_t inc = 0;
+	refill(count, inc);
+	if (count <= 0 || inc <= 0)
+		return;
+
 	uint64_t p = 0;
-	while (p < sels->size()) {
-		uint32_t N = sels->at(p);
-		_write2disk(N);
-		long last = -1;
-		for (uint32_t i = 1; i <= N; i++) {
-			uint32_t sel = sels->at(p + i);
-			uint32_t now = getNextInt(sel);
-			if (last == -1) {
-				_write2disk(now);
-				last = now;
-			} else {
-				_write2disk(last + now);
-				last += now;
-			}
+
+	while (true) {
+		while (numbers[p] == 0 && p < inc)
+			p++;
+		if (p >= inc) {
+			refill(count, inc);
+			if (count <= 0)
+				break;
+			p = 0;
 		}
-		p += N + 1;
+
+		uint32_t N = numbers[p++];
+		_write2disk(N);
+
+		if (p >= inc) {
+			refill(count, inc);
+			if (count <= 0)
+				break;
+			p = 0;
+		}
+
+		long last = 0;
+		for (uint32_t i = 1; i <= N; i++) {
+			while (numbers[p] == 0 && p < inc)
+				p++;
+
+			if (p >= inc) {
+				refill(count, inc);
+				if (count <= 0)
+					break;
+				p = 0;
+			}
+
+			uint32_t sel = numbers[p++];
+			uint32_t now = getNextInt(sel);
+			_write2disk(last + now);
+			last += now;
+		}
 	}
 	//ensure numbers in buffer written
 	if (offset > 0)
-		fwrite(numbers, 4, offset, fout);
+		fwrite(wBuf, 4, offset, fout);
 
 }
 
@@ -169,9 +201,10 @@ void init() {
 		msg();
 		exit(-1);
 	}
-	buf = new uint32_t[BUFSIZE];
+	rBuf = new uint32_t[BUFSIZE];
+	wBuf = new uint32_t[BUFSIZE];
+	sBuf = new uint32_t[BUFSIZE];
 	numbers = new uint32_t[MAXNUM];
-	sels = new vector<uint32_t>();
 //
 //	bs = new char[BUFSIZE];
 //	bd = new char[BUFSIZE];
@@ -182,12 +215,13 @@ void init() {
 void dispose() {
 	fclose(selIn);
 	fclose(datIn);
+	fflush(fout);
 	fclose(fout);
-	delete[] buf;
+	delete[] rBuf;
+	delete[] wBuf;
+	delete[] sBuf;
 	delete[] numbers;
 ////	delete[] bs;
-////	delete[] bd;
-	delete sels;
 }
 
 void msg() {
@@ -195,5 +229,5 @@ void msg() {
 	printf("Usage: DSDecoder infilePrefix outfile\n");
 	printf(
 			"InfilePrefix: prefix of compressed files eg. simple16 ->(simple16.dat & simple16.inf)\n");
-	printf("Outfile: output filename");
+	printf("Outfile: output filename\n");
 }

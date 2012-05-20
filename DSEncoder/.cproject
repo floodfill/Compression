@@ -37,13 +37,13 @@
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.exe.debug.option.optimization.level.2077172141" name="Optimization Level" superClass="gnu.c.compiler.exe.debug.option.optimization.level" valueType="enumerated"/>
 								<option id="gnu.c.compiler.exe.debug.option.debugging.level.1569309652" name="Debug Level" superClass="gnu.c.compiler.exe.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.misc.other.1556730139" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -msse2 -fomit-frame-pointer -fstrict-aliasing -march=nocona" valueType="string"/>
+								<option id="gnu.c.compiler.option.debugging.prof.1993763975" superClass="gnu.c.compiler.option.debugging.prof" value="true" valueType="boolean"/>
+								<option id="gnu.c.compiler.option.debugging.gprof.1185688196" superClass="gnu.c.compiler.option.debugging.gprof" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1536570267" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1139550188" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.962354924" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug">
-								<option id="gnu.cpp.link.option.paths.595010330" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
-									<listOptionValue builtIn="false" value="/usr/local/lib"/>
-								</option>
+								<option id="gnu.cpp.link.option.paths.595010330" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths"/>
 								<option id="gnu.cpp.link.option.debugging.prof.739678073" name="Generate prof information (-p)" superClass="gnu.cpp.link.option.debugging.prof" value="false" valueType="boolean"/>
 								<option id="gnu.cpp.link.option.debugging.gprof.2039070595" name="Generate gprof information (-pg)" superClass="gnu.cpp.link.option.debugging.gprof" value="false" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.2001219420" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">

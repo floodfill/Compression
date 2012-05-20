@@ -48,7 +48,7 @@ all: DSEncoder
 DSEncoder: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -L/usr/local/lib -o "DSEncoder" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++  -o "DSEncoder" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
