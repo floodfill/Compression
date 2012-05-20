@@ -28,7 +28,7 @@ void showMsg() {
 	printf("DiaoSiEncoding Encoder ver1.0 by Kan Xiao & Xinzhao Liang\n");
 	printf("Usage: DSEncoder in out\n");
 	printf("    In: input data filename\n");
-	printf("    Out: output filename -- out.dat & out.inf will be generated");
+	printf("    Out: output filename -- out.dat & out.inf will be generated\n");
 }
 
 int numOfBits(uint32_t num) {
@@ -62,7 +62,7 @@ void write2disk(uint32_t num) {
 
 }
 
-int enMain(int argc, const char *argv[]) {
+int main(int argc, const char *argv[]) {
 	if (argc < 3) {
 		showMsg();
 		exit(0);
@@ -75,10 +75,15 @@ int enMain(int argc, const char *argv[]) {
 	wBuf = new uint32_t[MAXSIZE];
 	selectors = new uint32_t[MAXSIZE];
 	memset(buff, 0, MAXSIZE);
+	uint32_t count;
 	while (!feof(finp)) {
-		fread(buff, 4, 1, finp);
+		count = fread(buff, 4, 1, finp);
+		if (count <= 0)
+			break;
+//		printf("#: %d\n", count);
 		uint32_t N = buff[0];
 		fread(buff + 1, 4, N, finp);
+//		cout << ftell(finp) << endl;
 		uint32_t last = 0, n2write = 0;
 		for (uint32_t i = 1; i <= N; i++) {
 			n2write = buff[i] - last;
@@ -87,7 +92,6 @@ int enMain(int argc, const char *argv[]) {
 			write2disk(n2write);
 			//printf("%d %d\n", buff[p + i], n2write);
 		}
-		uint32_t count;
 		s.encodeArray(buff, N + 1, selectors, count);
 		fwrite(selectors, 4, count, infout);
 	}

@@ -11,7 +11,7 @@
 #include <string>
 using namespace std;
 
-int main() {
+int Dmain() {
 	string base = "/home/kxiao/Desktop/integer_encoding_library/small";
 //	const char * en[] = { "", (base + ".dat").c_str(),
 //			(base + "Compressed").c_str() };
